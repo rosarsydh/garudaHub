@@ -19,7 +19,23 @@
     </style>
 </head>
 <body>
-    <h1><a href="{{ route('projects.index') }}" style="text-decoration:none;color:inherit;">Garuda-Hub</a></h1>
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+        <h1 style="margin:0;margin-right:auto;"><a href="{{ route('projects.index') }}" style="text-decoration:none;color:inherit;">Garuda-Hub</a></h1>
+        <a href="{{ route('projects.index') }}">Proyek</a>
+        @auth
+            @if (auth()->user()->role === 'klien')
+                <a href="{{ route('projects.create') }}">Pasang Proyek</a>
+            @endif
+            <span>{{ auth()->user()->name }} ({{ auth()->user()->role }})</span>
+            <form action="{{ route('logout') }}" method="POST" style="display:inline">
+                @csrf
+                <button class="btn btn-gray">Keluar</button>
+            </form>
+        @else
+            <a href="{{ route('login') }}">Masuk</a>
+            <a href="{{ route('register') }}">Daftar</a>
+        @endauth
+    </div>
 
     @if (session('success'))
         <div class="alert">{{ session('success') }}</div>
