@@ -5,6 +5,7 @@ use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BidController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminController;
 
 Route::redirect('/', '/projects');
 
@@ -38,3 +39,11 @@ Route::post('/projects/{project}/bids/{bid}/pick', [BidController::class, 'pick'
     // Dasbor: klien dan developer saja (admin tidak punya dasbor)
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard')->middleware(['auth', 'role:klien,developer']);
+
+    // Admin
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('index');
+    Route::patch('/users/{user}/role', [AdminController::class, 'setRole'])->name('users.role');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
+    Route::delete('/projects/{project}', [AdminController::class, 'destroyProject'])->name('projects.destroy');
+});

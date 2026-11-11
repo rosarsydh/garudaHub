@@ -33,7 +33,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function login(Request $request)
+        public function login(Request $request)
     {
         $credentials = $request->validate([
             'email'    => 'required|email',
@@ -44,8 +44,12 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            return redirect()->route($user->role === 'admin' ? 'projects.index' : 'dashboard')
-            ->with('success', 'Selamat datang kembali.');
+            $tujuan = match ($user->role) {
+                'admin' => 'admin.index',
+                default => 'dashboard',
+            };
+
+            return redirect()->route($tujuan)->with('success', 'Selamat datang kembali.');
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
