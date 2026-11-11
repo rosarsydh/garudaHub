@@ -13,8 +13,15 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middl
 Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// Proyek: lihat daftar & detail untuk semua orang, kelola hanya klien
-Route::resource('projects', ProjectController::class)->only(['index', 'show']);
-Route::resource('projects', ProjectController::class)
-    ->except(['index', 'show'])
-    ->middleware(['auth', 'role:klien']);
+// Proyek: daftar & detail untuk semua orang, kelola hanya klien
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+
+Route::middleware(['auth', 'role:klien'])->group(function () {
+    Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/{project}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{project}', [ProjectController::class, 'update'])->name('projects.update');
+    Route::delete('/projects/{project}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+});
+
+Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
