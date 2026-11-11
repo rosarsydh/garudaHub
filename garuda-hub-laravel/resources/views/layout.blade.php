@@ -41,6 +41,10 @@
         <div class="alert">{{ session('success') }}</div>
     @endif
 
+    @if (session('error'))
+        <div class="alert" style="background:#fee2e2;">{{ session('error') }}</div>
+    @endif
+
     @yield('content')
 </body>
 </html>

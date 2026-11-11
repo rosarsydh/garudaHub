@@ -24,4 +24,10 @@ class Project extends Model
     {
         return $this->hasMany(Bid::class);
     }
+
+    public function isOpen(): bool
+    {
+    return $this->status === 'terbuka'
+        && $this->batas_lelang->format('Y-m-d') >= now()->format('Y-m-d');
+    }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BidController;
 
 Route::redirect('/', '/projects');
 
@@ -25,3 +26,10 @@ Route::middleware(['auth', 'role:klien'])->group(function () {
 });
 
 Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
+
+// Penawaran: developer mengajukan, klien memilih pemenang
+Route::post('/projects/{project}/bids', [BidController::class, 'store'])
+    ->name('bids.store')->middleware(['auth', 'role:developer']);
+
+Route::post('/projects/{project}/bids/{bid}/pick', [BidController::class, 'pick'])
+    ->name('bids.pick')->middleware(['auth', 'role:klien']);
