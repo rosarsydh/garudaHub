@@ -1,15 +1,5 @@
 @csrf
 
-<label>Klien</label>
-<select name="client_id">
-    @foreach ($clients as $client)
-        <option value="{{ $client->id }}" @selected(old('client_id', $project->client_id ?? '') == $client->id)>
-            {{ $client->name }}
-        </option>
-    @endforeach
-</select>
-@error('client_id') <div class="error">{{ $message }}</div> @enderror
-
 <label>Judul</label>
 <input type="text" name="judul" value="{{ old('judul', $project->judul ?? '') }}">
 @error('judul') <div class="error">{{ $message }}</div> @enderror
@@ -31,15 +21,8 @@
 @error('budget_max') <div class="error">{{ $message }}</div> @enderror
 
 <label>Batas Lelang</label>
-<input type="date" name="batas_lelang" value="{{ old('batas_lelang', isset($project) ? \Illuminate\Support\Carbon::parse($project->batas_lelang)->format('Y-m-d') : '') }}">
+<input type="date" name="batas_lelang" value="{{ old('batas_lelang', isset($project) ? $project->batas_lelang->format('Y-m-d') : '') }}">
 @error('batas_lelang') <div class="error">{{ $message }}</div> @enderror
-
-<label>Status</label>
-<select name="status">
-    @foreach (['terbuka', 'ditutup'] as $s)
-        <option value="{{ $s }}" @selected(old('status', $project->status ?? 'terbuka') == $s)>{{ $s }}</option>
-    @endforeach
-</select>
 
 <br><br>
 <button class="btn">Simpan</button>
