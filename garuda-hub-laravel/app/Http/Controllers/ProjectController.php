@@ -54,7 +54,7 @@ class ProjectController extends Controller
 
         Project::create($data);
 
-        return redirect()->route('projects.index')->with('success', 'Proyek berhasil dipasang.');
+        return redirect()->route('dashboard')->with('success', 'Proyek berhasil dipasang.');
     }
 
     public function show(Project $project)

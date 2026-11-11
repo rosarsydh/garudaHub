@@ -44,8 +44,8 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            return redirect()->route($user->role === 'admin' ? 'projects.index' : 'projects.index')
-                ->with('success', 'Selamat datang kembali.');
+            return redirect()->route($user->role === 'admin' ? 'projects.index' : 'dashboard')
+            ->with('success', 'Selamat datang kembali.');
         }
 
         return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');

@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BidController;
+use App\Http\Controllers\DashboardController;
 
 Route::redirect('/', '/projects');
 
@@ -33,3 +34,7 @@ Route::post('/projects/{project}/bids', [BidController::class, 'store'])
 
 Route::post('/projects/{project}/bids/{bid}/pick', [BidController::class, 'pick'])
     ->name('bids.pick')->middleware(['auth', 'role:klien']);
+
+    // Dasbor: klien dan developer saja (admin tidak punya dasbor)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')->middleware(['auth', 'role:klien,developer']);
